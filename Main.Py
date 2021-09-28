@@ -80,4 +80,4 @@ while running:
 
 
     #x +=right and -=left
-    #y +=down and -=up
+    #y +=down and -=up d
