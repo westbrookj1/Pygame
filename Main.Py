@@ -14,7 +14,7 @@ pygame.display.set_icon(icon)
 #background
 background= pygame.image.load('background.png')
 
-#Player
+#Playersu
 PlayerImg= pygame.image.load('8bit.png')
 playerX= 370
 playerY= 480
