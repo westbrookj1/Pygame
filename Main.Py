@@ -1,9 +1,13 @@
 import pygame
 import random
 import math
+
+from pygame import mixer
+
 #Initialize the pygame
 pygame.init()
-
+pygame.mixer.pre_init(44100, 16, 2, 4096) #frequency, size, channels, buffersize
+pygame.init() #turn all of pygame on.
 #This creates the screen size
 screen = pygame.display.set_mode((800,600))
 
@@ -14,6 +18,10 @@ pygame.display.set_icon(icon)
 
 #background
 background= pygame.image.load('landscape.jpg')
+
+#background sound
+#mixer.music.load('')
+#mixer.music.play(-1)
 
 #Playersu
 PlayerImg= pygame.image.load('8bit.png')
@@ -51,9 +59,15 @@ font = pygame.font.Font('freesansbold.ttf',16)
 textX =10
 textY =10
 
+#gameOver
+over_font =pygame.font.Font('freesansbold.ttf',64)
+
 def show_score(x,y):
     score = font.render("Score:"+ str(scoreValue),True, (255,255,255))
     screen.blit(score,(x,y))
+def gameOverText():
+    over_text=over_font.render("GAME OVER",True, (255,255,255))
+    screen.blit(over_text,(200,250))
 
 #blit function actually draws the image onto the screen- then you have to plug into the while loop after the rgb display
 def player(x,y):
@@ -89,6 +103,8 @@ while running:
                 playerX_change = 1.00
             if event.key == pygame.K_SPACE:
                 if basicbullet_state is "ready":
+                    bullet_Sound= mixer.Sound("bullet.wav")
+                    bullet_Sound.play()
                     basicbulletX=playerX
                     fire_basicbullet(basicbulletX,basicbulletY)
         if event.type == pygame.KEYUP:
@@ -118,6 +134,12 @@ while running:
         playerX=738
 #enemy movement
     for i in range(numOfEnemies):
+        #Game over
+        if enemyY[i] >440:
+            for j in range(numOfEnemies):
+                enemyY[j]=2000
+            gameOverText()
+            break
         enemyX[i] += enemyX_change[i]
         if enemyX[i] <=0:
             enemyX_change[i] = .25
@@ -128,6 +150,8 @@ while running:
 #collision
         collision=isCollision(enemyX[i],enemyY[i],basicbulletX,basicbulletY)
         if collision:
+            explosion_Sound= mixer.Sound("EnemyDestroyed.wav")
+            explosion_Sound.play()
             basicbulletY= 480
             basicbullet_state ="ready"
             scoreValue+=100
