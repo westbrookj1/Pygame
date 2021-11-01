@@ -42,7 +42,7 @@ for i in range(numOfEnemies):
     enemyX.append(random.randint(0,737))
     enemyY.append(random.randint(50,150))
     enemyX_change.append(.75)
-    enemyY_change.append(25)
+    enemyY_change.append(40)
 
 #Basic Bullet
 basicbulletImg= pygame.image.load('bullet.png')
